@@ -18,7 +18,7 @@
 	"bugs": {
 		"url": "https://github.com/on4r4p/Le_Bon_Place/issues"
 	},
-	"homepage": "https://github.com/on4r4p/Le_Bon_Place#readme.md",
+	"homepage": "https://github.com/on4r4p/Le_Bon_Place#readme",
 	"dependencies": {
 		"class-validator": "^0.14.3",
 		"express": "^5.1.0",
