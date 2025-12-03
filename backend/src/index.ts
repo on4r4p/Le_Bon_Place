@@ -3,6 +3,8 @@ import { validate } from "class-validator";
 import express from "express";
 import db from "./db";
 import { Ad } from "./entities/Ad";
+import { Category } from "./entities/Cat";
+import { Tag } from "./entities/Tg";
 
 const app = express();
 
@@ -12,13 +14,38 @@ const port = 4000;
 
 app.get("/ads", async (_req, res) => {
   try {
-    const ads = await Ad.find()
+    const ads = await Ad.find({ relations: { category: true, tags: true } })
     res.send(ads);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
   }
 });
+
+
+
+app.get("/categories", async (_req, res) => {
+  try {
+    const categories = await Category.find()
+    res.send(categories);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+app.get("/tags", async (_req, res) => {
+  try {
+    const tags = await Tag.find()
+    res.send(tags);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+
+
 
 app.post("/ads", async (req, res) => {
   try {

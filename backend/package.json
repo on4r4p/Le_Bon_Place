@@ -1,5 +1,5 @@
 {
-	"name": "Le_Bon_Place_backend",
+	"name": "le_bon_place",
 	"version": "0.0.1",
 	"description": "",
 	"main": "src/index.ts",
@@ -18,11 +18,12 @@
 	"bugs": {
 		"url": "https://github.com/on4r4p/Le_Bon_Place/issues"
 	},
-	"homepage": "https://github.com/on4r4p/Le_Bon_Place#readme",
+	"homepage": "https://github.com/on4r4p/Le_Bon_Place",
 	"dependencies": {
 		"class-validator": "^0.14.3",
-		"express": "^5.1.0",
+		"express": "^5.2.1",
 		"reflect-metadata": "^0.2.2",
+		"sqlite3": "^5.1.7",
 		"ts-node-dev": "^2.0.0",
 		"typeorm": "^0.3.27"
 	},
