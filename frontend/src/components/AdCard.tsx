@@ -1,11 +1,11 @@
-import type { Ad } from "../types";
+import type { Ad } from "../type";
 
 interface AdCardProps {
     ad: Ad;
 }
 
 export default function AdCard({
-    ad: { title, price, pictureUrl },
+    ad: { titre, prix, picpath },
 }: AdCardProps) {
     return (
         <div className="w-[400px]">
@@ -13,12 +13,12 @@ export default function AdCard({
                 {/** biome-ignore lint/performance/noImgElement: images come form unknown domains */}
                 <img
                     className="h-[200px] w-full object-cover rounded-md"
-                    src={pictureUrl}
-                    alt={title}
+                    src={picpath}
+                    alt={titre}
                 />
                 <div className="flex justify-between pt-6">
-                    <div className="ad-card-title">{title}</div>
-                    <div className="ad-card-price">{price} €</div>
+                    <div className="ad-card-titre">{titre}</div>
+                    <div className="ad-card-prix">{prix} €</div>
                 </div>
             </div>
         </div>
