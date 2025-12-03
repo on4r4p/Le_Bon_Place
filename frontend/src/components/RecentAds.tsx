@@ -14,9 +14,18 @@ export default function RecentAds() {
             id: 2,
             picpath:
                 "https://s12.gifyu.com/images/bEbbZ.png",
-            prix: 5,
+            prix: 35,
             titre: "t-shirt noir",
         },
+
+        {
+            id: 3,
+            picpath:
+                "https://i.ibb.co/s4R4LNS/Screenshot-From-2025-12-03-17-38-19.png",
+            prix: 123,
+            titre: "Chat mignon",
+        },
+
     ];
 
     return (
