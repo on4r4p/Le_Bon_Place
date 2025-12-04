@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import { validate } from "class-validator";
+import cors from "cors";
 import express from "express";
 import db from "./db";
 import { Ad } from "./entities/Ad";
@@ -9,12 +10,28 @@ import { Tag } from "./entities/Tg";
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 const port = 4000;
 
-app.get("/ads", async (_req, res) => {
+app.get("/ads", async (req, res) => {
   try {
-    const ads = await Ad.find({ relations: { category: true, tags: true } })
+    const categoryId =
+      typeof req.query.categoryId === "string"
+        ? parseInt(req.query.categoryId, 10)
+        : undefined;
+    const limit =
+      typeof req.query.limit === "string"
+        ? parseInt(req.query.limit, 10)
+        : undefined;
+    const sortBy = req.query.sortBy || 'createdAt';
+    const order = req.query.order || 'desc';
+
+    const ads = await Ad.find({
+      where: { category: { id: categoryId } },
+      take: limit,
+      order: { [`${sortBy}`]: order },
+    });
     res.send(ads);
   } catch (err) {
     console.error(err);
@@ -22,11 +39,24 @@ app.get("/ads", async (_req, res) => {
   }
 });
 
-
+app.get("/ads/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const ad = await Ad.findOne({
+      where: { id },
+      relations: { tags: true, category: true },
+    });
+    if (!ad) return res.sendStatus(404);
+    res.send(ad);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
 
 app.get("/categories", async (_req, res) => {
   try {
-    const categories = await Category.find()
+    const categories = await Category.find();
     res.send(categories);
   } catch (err) {
     console.error(err);
@@ -36,16 +66,13 @@ app.get("/categories", async (_req, res) => {
 
 app.get("/tags", async (_req, res) => {
   try {
-    const tags = await Tag.find()
+    const tags = await Tag.find();
     res.send(tags);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
   }
 });
-
-
-
 
 app.post("/ads", async (req, res) => {
   try {
@@ -60,13 +87,39 @@ app.post("/ads", async (req, res) => {
   }
 });
 
+app.post("/categories", async (req, res) => {
+  try {
+    const newCategory = Category.create(req.body);
+    const errors = await validate(newCategory);
+    if (errors.length > 0) return res.status(422).send({ errors });
+    const categoryWithId = await newCategory.save();
+    res.send(categoryWithId);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+app.post("/tags", async (req, res) => {
+  try {
+    const newTag = Tag.create(req.body);
+    const errors = await validate(newTag);
+    if (errors.length > 0) return res.status(422).send({ errors });
+    const tagWithId = await newTag.save();
+    res.send(tagWithId);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
 app.delete("/ads/:id", async (req, res) => {
   try {
-    const id = parseInt(req.params.id, 10)
+    const id = parseInt(req.params.id, 10);
     const adToDelete = await Ad.findOneBy({ id });
     if (!adToDelete) return res.sendStatus(404);
-    await adToDelete.remove()
-    res.send('deleted !');
+    await adToDelete.remove();
+    res.send("deleted !");
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
@@ -75,20 +128,18 @@ app.delete("/ads/:id", async (req, res) => {
 
 app.patch("/ads/:id", async (req, res) => {
   try {
-    const id = parseInt(req.params.id, 10)
+    const id = parseInt(req.params.id, 10);
     const adToUpdate = await Ad.findOneBy({ id });
     if (!adToUpdate) return res.sendStatus(404);
     Ad.merge(adToUpdate, req.body);
     const errors = await validate(adToUpdate);
-    if (errors.length > 0)
-      return res.status(422).send({ errors });
+    if (errors.length > 0) return res.status(422).send({ errors });
     res.send(await adToUpdate.save());
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
   }
 });
-
 
 app.listen(port, async () => {
   await db.initialize();

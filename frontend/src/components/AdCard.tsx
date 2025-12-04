@@ -10,7 +10,7 @@ export default function AdCard({
     ad: { titre, prix, picpath, id },
 }: AdCardProps) {
     return (
-        <Link href={`http://127.0.0.1:30000/ads/${id}`}
+        <Link href={`http://127.0.0.1:4000/ads/${id}`}
             className="w-[400px] h- [400px]">
 
             <div className="relative shadow-md border rounded-lg p-4 bg-white mr-5 mb-3">

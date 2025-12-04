@@ -6,9 +6,9 @@ export default function RecentAds() {
         {
             id: 1,
             picpath:
-                "https://www.wizicar.com/wp-content/uploads/2020/01/nouvelle-peugeot-208.jpg",
-            prix: 5000,
-            titre: "Peugeot 208",
+                "https://2.bp.blogspot.com/_GJHAezShK6I/S2dpBNo4ovI/AAAAAAAANGM/3NLH0KVR40g/s400/Duke%2520Nukem.jpg",
+            prix: 666,
+            titre: "He got Balls of steel",
         },
         {
             id: 2,
