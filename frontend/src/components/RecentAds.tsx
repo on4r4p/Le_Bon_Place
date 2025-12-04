@@ -23,7 +23,15 @@ export default function RecentAds() {
             picpath:
                 "https://i.ibb.co/s4R4LNS/Screenshot-From-2025-12-03-17-38-19.png",
             prix: 123,
-            titre: "Chat mignon",
+            titre: "Chat patriote mignon",
+        },
+
+        {
+            id: 4,
+            picpath:
+                "https://i.postimg.cc/Bbx02Nc1/Cat-Guitar-Sunglasses.png",
+            prix: 175,
+            titre: "Chat Gandalf métaleux",
         },
 
     ];

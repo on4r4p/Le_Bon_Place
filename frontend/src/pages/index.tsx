@@ -1,13 +1,13 @@
-import Header from "@/components/Header";
+import FavButton from "@/components/FavButton";
+import Layout from "@/components/Layout";
 import RecentAds from "@/components/RecentAds";
 
 export default function Home() {
   return (
-    <>
-      <Header />
-      <main>
-        <RecentAds />
-      </main>
-    </>
+    <Layout pageTitle="Accueil">
+      <RecentAds />
+
+    </Layout>
+
   );
-} 
+}   
