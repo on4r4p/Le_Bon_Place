@@ -26,7 +26,7 @@ async function main() {
     const tshirt = Ad.create({
         titre: "Tshirt Antilope",
         description:
-            "Tshit noir designé par ma fille de 9 ans",
+            "Tshit noir designée par ma fille de 9 ans",
         prix: 30,
         picpath: "https://s12.gifyu.com/images/bEbbZ.png",
         location: "Paris",

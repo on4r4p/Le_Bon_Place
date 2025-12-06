@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import type { Ad } from "@/type";
+import FavButton from "@/components/FavButton";
 
 export default function AdDetails() {
     const router = useRouter();
@@ -55,6 +56,10 @@ export default function AdDetails() {
                                 <div className="flex items-center mt-2 ">
                                     <MapPinIcon width={24} height={24} className="mr-2" />{" "}
                                     {ad.location}
+
+                                </div>
+                                <div className="flex items-center">
+                                    <FavButton />
                                 </div>
                             </div>
                         </div>

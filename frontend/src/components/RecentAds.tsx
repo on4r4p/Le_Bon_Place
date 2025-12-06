@@ -7,7 +7,7 @@ export default function RecentAds() {
 
 
     useEffect(() => {
-        fetch("http://localhost:4000/ads?limit=5&sortBy=createdAt&order=desc")
+        fetch("http://127.0.0.1:4000/ads?limit=5&sortBy=createdAt&order=desc")
             .then((res) => res.json())
             .then((data) => {
                 setAds(data);
