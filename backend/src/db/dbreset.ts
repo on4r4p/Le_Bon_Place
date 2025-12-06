@@ -4,6 +4,7 @@ import { Ad } from "../entities/Ad";
 import { Category } from "../entities/Cat";
 import { Tag } from "../entities/Tg";
 import db from "./index";
+import { parentPort } from 'node:worker_threads';
 
 export async function clearDB() {
     await unlink(resolve(__dirname, "lebonplace.sqlite"));
@@ -13,92 +14,96 @@ async function main() {
     await clearDB();
     await db.initialize();
 
-    const macbook = Ad.create({
-        title: "DukeNukem",
+    const duke = Ad.create({
+        titre: "DukeNukem",
         description:
             "He got balls of steels",
-        price: 666,
-        pictureUrl:
+        prix: 666,
+        picpath:
             "https://2.bp.blogspot.com/_GJHAezShK6I/S2dpBNo4ovI/AAAAAAAANGM/3NLH0KVR40g/s400/Duke%2520Nukem.jpg",
         location: "UpYours",
     });
-    const keyboard = Ad.create({
-        title: "Tshirt Antilope",
+    const tshirt = Ad.create({
+        titre: "Tshirt Antilope",
         description:
             "Tshit noir designé par ma fille de 9 ans",
-        price: 30,
-        pictureUrl: "https://s12.gifyu.com/images/bEbbZ.png",
+        prix: 30,
+        picpath: "https://s12.gifyu.com/images/bEbbZ.png",
         location: "Paris",
     });
-    const peugeot = Ad.create({
-        title: "Chat Patriote Mignon",
+    const patriote = Ad.create({
+        titre: "Chat Patriote Mignon",
         description: "Make cats great again",
-        price: 911,
-        pictureUrl: "https://i.ibb.co/s4R4LNS/Screenshot-From-2025-12-03-17-38-19.png",
+        prix: 911,
+        picpath: "https://i.ibb.co/s4R4LNS/Screenshot-From-2025-12-03-17-38-19.png",
         location: "USA USA USA USA",
     });
-    const renault = Ad.create({
-        title: "Chat Gandalf métaleux",
+    const gandalf = Ad.create({
+        titre: "Chat Gandalf métaleux",
         description: "Rock and Roll you Foul !",
-        price: 423,
-        pictureUrl: "https://i.postimg.cc/Bbx02Nc1/Cat-Guitar-Sunglasses.png",
+        prix: 423,
+        picpath: "https://i.postimg.cc/Bbx02Nc1/Cat-Guitar-Sunglasses.png",
         location: "Middle Earth",
     });
-    const porsche = Ad.create({
-        title: "Accessoires polyvalents",
+    const bsdm = Ad.create({
+        titre: "Accessoires polyvalents",
         description: "Occasion presque jamais utilisé.",
-        price: 69,
-        pictureUrl:
+        prix: 69,
+        picpath:
             "https://m.media-amazon.com/images/I/61yKaUSqtZL.jpg",
         location: "Bois de boulogne",
     });
 
-    const raquette = Ad.create({
-        title: "Peignoir pour Nathan",
+    const peignoir = Ad.create({
+        titre: "Peignoir pour Nathan",
         description: "Peignoir lépoard taille s",
-        price: 25,
-        pictureUrl: "https://i.ibb.co/21b3GHMh/Leapoard-3-D.webp",
+        prix: 25,
+        picpath: "https://i.ibb.co/21b3GHMh/Leapoard-3-D.webp",
         location: "Tanzanie",
     });
 
-    const skis = Ad.create({
-        title: "Black Forest cake Delicious and moist",
+    const cake = Ad.create({
+        titre: "Black Forest cake Delicious and moist",
         description: "The Cake Is A Lie",
-        price: 29,
-        pictureUrl: "https://spillthebeans.ie/wp-content/uploads/2015/08/portalcake1.jpg",
+        prix: 29,
+        picpath: "https://spillthebeans.ie/wp-content/uploads/2015/08/portalcake1.jpg",
         location: "Aperture science",
     });
 
-    const computerCat = await Category.create({ name: "informatique" }).save();
-    const voitureCat = await Category.create({ name: "automobile" }).save();
-    const sportCat = await Category.create({ name: "sport" }).save();
-    const tag1 = await Tag.create({ name: "tag1" }).save();
-    const tag2 = await Tag.create({ name: "tag2" }).save();
-    const tag3 = await Tag.create({ name: "tag3" }).save();
+    const dj = Ad.create({
+        titre: "CHat Dj",
+        description: "Dj Cat is in da house",
+        prix: 29,
+        picpath: "https://i.ibb.co/C5M3MP7C/Screenshot-From-2025-12-05-10-58-39.png",
+        location: "MacoumbaNightclub",
+    });
 
-    keyboard.category = computerCat;
-    keyboard.tags = [tag1, tag2];
+    const gamecat = await Category.create({ nom: "informatique" }).save();
+    const vetementcat = await Category.create({ nom: "vetement" }).save();
+    const accessoirecat = await Category.create({ nom: "accessoire" }).save();
+    const chatcat = await Category.create({ nom: "chat" }).save();
+    const gateaucat = await Category.create({ nom: "gateau" }).save();
 
-    macbook.category = computerCat;
-    macbook.tags = [tag2, tag3];
 
-    peugeot.category = voitureCat;
-    renault.category = voitureCat;
-    porsche.category = voitureCat;
+    duke.categorie = gamecat;
+    tshirt.categorie = vetementcat;
+    patriote.categorie = chatcat;
+    dj.categorie = chatcat;
+    gandalf.categorie = chatcat;
 
-    skis.category = sportCat;
-    raquette.category = sportCat;
+    cake.categorie = gateaucat;
+    bsdm.categorie = accessoirecat;
 
-    await keyboard.save();
-    await macbook.save();
-    await peugeot.save();
-    await renault.save();
-    await porsche.save();
-    await raquette.save();
-    await skis.save();
+    await duke.save();
+    await tshirt.save();
+    await patriote.save();
+    await dj.save();
+    await gandalf.save();
+    await cake.save();
+    await bsdm.save();
 
     await db.destroy();
     console.log("done !");
 }
 
-main();
+main().catch(console.log);

@@ -39,7 +39,7 @@ export default function AdDetails() {
                                                 className="bg-slate-100 rounded-full p-2 mr-2 text-gray-600 border-slate-300 border "
                                                 key={t.id}
                                             >
-                                                {t.name}
+                                                {t.nom}
                                             </span>
                                         ))}
                                     </div>

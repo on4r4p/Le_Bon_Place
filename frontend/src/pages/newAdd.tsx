@@ -36,7 +36,7 @@ export default function NewAd() {
                         <select name="category" id="category">
                             {categories.map((c) => (
                                 <option key={c.id} value={c.id}>
-                                    {c.name}
+                                    {c.nom}
                                 </option>
                             ))}
                         </select>

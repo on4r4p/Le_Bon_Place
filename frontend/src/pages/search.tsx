@@ -9,8 +9,8 @@ export default function Search() {
     const router = useRouter();
 
     useEffect(() => {
-        const url = new URL('http://localhost:3000${router.asPath}');
-        fetch('http://localhost:4000/ads?${url.searchParams}')
+        const url = new URL(`http://127.0.0.1:3000${router.asPath}`);
+        fetch(`http://127.0.0.1:4000/ads?${url.searchParams}`)
             .then((res) => res.json())
             .then((data) => {
                 console.table(data);

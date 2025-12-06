@@ -26,7 +26,7 @@ export default function Header() {
 
             <nav className="flex h-[54px]">
                 {categories.map((cat) => {
-                    const [firstLetter, ...resetOfCatName] = cat.name.split("");
+                    const [firstLetter, ...resetOfCatName] = cat.nom.split("");
                     const catName = firstLetter.toUpperCase() + resetOfCatName.join("");
                     const isActive = router.query.categoryId === cat.id.toString();
 

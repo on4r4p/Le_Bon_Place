@@ -28,7 +28,7 @@ app.get("/ads", async (req, res) => {
     const order = req.query.order || 'desc';
 
     const ads = await Ad.find({
-      where: { category: { id: categoryId } },
+      where: { categorie: { id: categoryId } },
       take: limit,
       order: { [`${sortBy}`]: order },
     });
@@ -44,7 +44,7 @@ app.get("/ads/:id", async (req, res) => {
     const id = parseInt(req.params.id, 10);
     const ad = await Ad.findOne({
       where: { id },
-      relations: { tags: true, category: true },
+      relations: { tags: true, categorie: true },
     });
     if (!ad) return res.sendStatus(404);
     res.send(ad);
