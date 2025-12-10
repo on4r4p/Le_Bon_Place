@@ -80,7 +80,7 @@ async function main() {
     });
 
     const dj = Ad.create({
-        titre: "CHat Dj",
+        titre: "Chat Dj",
         description: "Dj Cat is in da house",
         prix: 299,
         picpath: "https://i.ibb.co/C5M3MP7C/Screenshot-From-2025-12-05-10-58-39.png",
@@ -95,11 +95,23 @@ async function main() {
         location: "Le garage le plus proche",
     });
 
+    const supercat = Ad.create({
+        titre: "Chat Fusé",
+        description: "Super Cat strikes again",
+        prix: 723,
+        picpath: "https://i.postimg.cc/9XrkthCv/Cat-Jump-Epic.png",
+        location: "Litiére de la solitude",
+    });
+
+
+
+
+
     const gamecat = await Category.create({ nom: "informatique" }).save();
-    const vetementcat = await Category.create({ nom: "vetement" }).save();
+    const vetementcat = await Category.create({ nom: "vêtement" }).save();
     const accessoirecat = await Category.create({ nom: "accessoire" }).save();
     const chatcat = await Category.create({ nom: "chat" }).save();
-    const gateaucat = await Category.create({ nom: "gateau" }).save();
+    const gateaucat = await Category.create({ nom: "gâteau" }).save();
 
 
     duke.categorie = gamecat;
@@ -112,6 +124,7 @@ async function main() {
     cake.categorie = gateaucat;
     bsdm.categorie = accessoirecat;
     Bricocat.categorie = chatcat;
+    supercat.categorie = chatcat;
 
     await duke.save();
     await tshirt.save();
@@ -123,6 +136,7 @@ async function main() {
     await Bricocat.save();
     await cake.save();
     await bsdm.save();
+    await supercat.save();
 
     await db.destroy();
     console.log("done !");
