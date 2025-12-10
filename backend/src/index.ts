@@ -32,7 +32,7 @@ app.use(express.json());
 app.use(cors());
 
 const port_express = env.EXPRESS_SERVER_PORT;
-
+console.log({ port_express })
 app.get("/ads", async (req, res) => {
   try {
     const categoryId =
