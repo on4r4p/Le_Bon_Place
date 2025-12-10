@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import Select from "react-select";
+import { FormEvent, useEffect, useState } from "react";
 import Layout from "@/components/Layout";
-import type { Category } from "@/type";
+import type { AdInput, Category, Tag } from "@/types_frontend";
 
 export default function NewAd() {
     const [categories, setCategories] = useState<Category[]>([]);
+    const router = useRouter();
+
 
     useEffect(() => {
-        fetch("http://localhost:4000/categories")
+        fetch("http://127.0.0.1:4000/categories")
             .then((res) => res.json())
             .then((data) => {
                 setCategories(data);
@@ -16,37 +20,171 @@ export default function NewAd() {
             });
     }, []);
 
+
+    const [tags, setTags] = useState<Tag[]>([]);
+    const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    useEffect(() => {
+        fetch("http://127.0.0.1:4000/tags")
+            .then((res) => res.json())
+            .then((data) => {
+                setTags(data);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }, []);
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        const formData = new FormData(e.target as HTMLFormElement);
+        const toSend = Object.fromEntries(formData.entries()) as unknown as AdInput;
+        toSend.prix = parseFloat(toSend.prix as unknown as string);
+        toSend.categorie = { id: toSend.categorie as unknown as number };
+        toSend.tags = selectedTags.map((t) => ({ id: t.id }));
+
+        try {
+            const response = await fetch("http://127.0.0.1:4000/ads", {
+                method: "POST",
+                body: JSON.stringify(toSend),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const data = await response.json();
+            console.log("response from API : ", data);
+            router.push(`/ads/${data.id}`);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+
     return (
         <Layout pageTitle="Création d'une annonce">
-            <div className="p-4">
-                <h2 className="text-xl font-bold">Nouvelle annonce</h2>
-                <form>
-                    <div className="my-2">
-                        <label htmlFor="name">Titre</label>
+            <div className="p-4 max-w-[600px] mx-auto">
+                <h2 className="text-xl font-bold my-6 text-center">Nouvelle annonce</h2>
+                <form onSubmit={handleSubmit} className="pb-12">
+                    <div className="form-control w-full mb-3">
+                        <label className="label" htmlFor="titre">
+                            <span className="label-text">Titre</span>
+                        </label>
                         <input
+                            required
                             type="text"
                             name="title"
-                            id="name"
-                            className="m-2 p-2 border"
-                            required
+                            id="title"
+                            placeholder="Zelda : Ocarina of time"
+                            className="input input-bordered w-full"
                         />
                     </div>
 
-                    <div className="my-2">
-                        <select name="category" id="category">
-                            {categories.map((c) => (
-                                <option key={c.id} value={c.id}>
-                                    {c.nom}
+                    <div className="form-control w-full mb-3">
+                        <label className="label" htmlFor="location">
+                            <span className="label-text">Localisation</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="location"
+                            id="location"
+                            required
+                            placeholder="Paris"
+                            className="input input-bordered w-full"
+                        />
+                    </div>
+
+                    <div className="form-control w-full mb-3">
+                        <label className="label" htmlFor="prix">
+                            <span className="label-text">Prix</span>
+                        </label>
+                        <input
+                            required
+                            type="number"
+                            name="prix"
+                            id="prix"
+                            min={0}
+                            placeholder="30"
+                            className="input input-bordered w-full"
+                        />
+                    </div>
+
+                    <div className="form-control w-full mb-3">
+                        <label className="label" htmlFor="picpath">
+                            <span className="label-text">Image</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="picpath"
+                            id="picpath"
+                            required
+                            placeholder="https://imageshack.com/zoot.png"
+                            className="input input-bordered w-full"
+                        />
+                    </div>
+
+                    <div className="form-control w-full mb-3">
+                        <label className="label" htmlFor="categorie">
+                            <span className="label-text">Catégorie</span>
+                        </label>
+                        <select
+                            className="select select-bordered w-full"
+                            id="category"
+                            name="category"
+                            required
+                        >
+                            {categories.map((cat) => (
+                                <option key={cat.id} value={cat.id}>
+                                    {cat.nom}
                                 </option>
                             ))}
                         </select>
                     </div>
 
+                    <div className="form-control w-full mb-3">
+                        <label htmlFor="tags" className="label">
+                            <span className="label-text">Tags</span>
+                        </label>
+                        <Select
+                            options={tags}
+                            getOptionValue={(o) => o.id.toString()}
+                            getOptionLabel={(o) => o.nom}
+                            isMulti
+                            name="tags"
+                            id="tags"
+                            value={selectedTags}
+                            closeMenuOnSelect={false}
+                            onChange={(tags) => {
+                                setSelectedTags(tags.slice());
+                            }}
+                        />
+                    </div>
+
+                    <div className="form-control w-full mb-3">
+                        <label className="label" htmlFor="description">
+                            <span className="label-text">Description</span>
+                        </label>
+                        <textarea
+                            rows={10}
+                            className="textarea textarea-bordered w-full"
+                            placeholder="The Legend of Zelda: Ocarina of Time est un jeu vidéo d'action-aventure développé par Nintendo EAD et édité par Nintendo sur Nintendo 64. Ocarina of Time raconte l'histoire de Link, un jeune garçon vivant dans un village perdu dans la forêt, qui parcourt le royaume d'Hyrule pour empêcher Ganondorf d'obtenir la Triforce, une relique sacrée partagée en trois : le courage (Link), la sagesse (Zelda) et la force (Ganondorf)."
+                            name="description"
+                            id="description"
+                            required
+                        ></textarea>
+                    </div>
+
                     <button
-                        className="p-2 bg-amber-600 hover:bg-amber-700 cursor-pointer text-white"
                         type="submit"
+                        className="btn btn-primary mt-12 w-full"
+                        disabled={isSubmitting}
                     >
-                        Save
+                        {isSubmitting ? "Sauvegarde en cours" : "Envoyer"}
                     </button>
                 </form>
             </div>

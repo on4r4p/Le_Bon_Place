@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Ad } from "../type";
+import type { Ad } from "../types_frontend";
 import FavButton from "./FavButton";
 
 interface AdCardProps {
@@ -7,11 +7,11 @@ interface AdCardProps {
 }
 
 export default function AdCard({
-    ad: { titre, prix, picpath, id },
+    ad: { id, titre, picpath, prix },
 }: AdCardProps) {
     return (
         <Link href={`http://127.0.0.1:3000/ads/${id}`}
-            className="w-[400px] h- [400px]">
+            className="w-[400px] h- [400px] cursor-pointer">
 
             <div className="relative shadow-md border rounded-lg p-4 bg-white mr-5 mb-3">
                 {/** biome-ignore lint/performance/noImgElement: images come form unknown domains */}

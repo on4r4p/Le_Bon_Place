@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Ad } from "@/type";
+import type { Ad } from "@/types_frontend";
 import AdCard from "./AdCard";
 
 export default function RecentAds() {
@@ -7,7 +7,7 @@ export default function RecentAds() {
 
 
     useEffect(() => {
-        fetch("http://127.0.0.1:4000/ads?limit=5&sortBy=createdAt&order=desc")
+        fetch("http://127.0.0.1:4000/ads")
             .then((res) => res.json())
             .then((data) => {
                 setAds(data);

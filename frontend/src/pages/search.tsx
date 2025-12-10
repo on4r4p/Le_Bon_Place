@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import AdCard from "@/components/AdCard";
 import Layout from "@/components/Layout";
-import type { Ad } from "@/type";
+import type { Ad } from "@/types_frontend";
 
 export default function Search() {
     const [ads, setAds] = useState<Ad[]>([]);

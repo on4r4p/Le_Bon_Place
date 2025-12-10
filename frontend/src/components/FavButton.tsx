@@ -11,7 +11,7 @@ export default function FavButton() {
         setShowmess(true);
         setTimeout(() => {
             setShowmess(false);
-        }, 2000);
+        }, 6000);
     }
 
     return (

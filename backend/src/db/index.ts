@@ -5,5 +5,8 @@ export default new DataSource({
   database: "src/db/lebonplace.sqlite",
   entities: ["src/entities/*.ts"],
   synchronize: true,
-  logging: true,
+  //logging: true,
 });
+
+
+

@@ -2,7 +2,7 @@ import { MapPinIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
-import type { Ad } from "@/type";
+import type { Ad } from "@/types_frontend";
 import FavButton from "@/components/FavButton";
 
 export default function AdDetails() {
