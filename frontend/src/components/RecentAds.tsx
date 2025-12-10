@@ -7,8 +7,7 @@ import Loader from "./Loader";
 import AdCard from "./AdCard";
 
 const GET_RECENT_ADS = gql`
-
-    query GET_RECENT_ADS = gql`
+ query GET_RECENT_ADS = gql
         query Ads {
             ads {
         id
@@ -16,9 +15,7 @@ const GET_RECENT_ADS = gql`
         price
         picpath
     }
-}
-
-
+`
 
 export default function RecentAds() {
     const { loading, error, data } = useQuery<{ ads: Ad[] }>(GET_RECENT_ADS);
