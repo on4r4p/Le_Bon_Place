@@ -6,7 +6,7 @@ import { gql } from "@apollo/client";
 import Loader from "./Loader";
 import AdCard from "./AdCard";
 
-const GET_RECENT_ADS = gql`
+/* const GET_RECENT_ADS = gql`
         query Ads {
             ads {
         id
@@ -16,16 +16,23 @@ const GET_RECENT_ADS = gql`
     }
 }
 `;
+ */
+
 
 export default function RecentAds() {
-    const { loading, error, data } = useQuery<{ ads: Ad[] }>(GET_RECENT_ADS);
+    const { data, loading, error } = useRecentAdsQuery();
     const ads = data?.ads || [];
+
     return (
         <div className="p-4">
             <h2 className="text-xl font-bold mb-6">Annonces récentes</h2>
             <div className="flex flex-wrap">
                 {loading && <Loader />}
-                {error && (<p className="text-red-600">Erreur de ouf de chargement.</p>)}
+                {error && (
+                    <div className="text-red-600">
+                        Une erreur est survenue lors de la récupération des données
+                    </div>
+                )}
                 {ads.map((a) => (
                     <AdCard ad={a} key={a.id} />
                 ))}
@@ -33,6 +40,27 @@ export default function RecentAds() {
         </div>
     );
 }
+
+
+
+
+
+// export default function RecentAds() {
+//     const { loading, error, data } = useQuery<{ ads: Ad[] }>(GET_RECENT_ADS);
+//     const ads = data?.ads || [];
+//     return (
+//         <div className="p-4">
+//             <h2 className="text-xl font-bold mb-6">Annonces récentes</h2>
+//             <div className="flex flex-wrap">
+//                 {loading && <Loader />}
+//                 {error && (<p className="text-red-600">Erreur de ouf de chargement.</p>)}
+//                 {ads.map((a) => (
+//                     <AdCard ad={a} key={a.id} />
+//                 ))}
+//             </div>
+//         </div>
+//     );
+// }
 
 
 

@@ -54,6 +54,16 @@ async function main() {
         picpath: "https://i.postimg.cc/Bbx02Nc1/Cat-Guitar-Sunglasses.png",
         location: "Middle Earth",
     });
+    const duck = Ad.create({
+        titre: "DuckNukem",
+        description:
+            "It's not a duck , its a feature .",
+        prix: 12,
+        picpath: "https://upload.wikimedia.org/wikipedia/commons/d/d5/Rubber_duck_assisting_with_debugging.jpg",
+        location: "ligne 404",
+    });
+
+
     const bsdm = Ad.create({
         titre: "Accessoires polyvalents",
         description: "Occasion presque jamais utilisé.",
@@ -95,6 +105,24 @@ async function main() {
         location: "Le garage le plus proche",
     });
 
+    const catdonald = Ad.create({
+        titre: "Catdonald",
+        description: "Cat Maxi Deluxe",
+        prix: 99,
+        picpath: "https://i.ibb.co/Z6Hsv0tq/Screenshot-From-2025-12-13-21-27-51.png",
+        location: "Fast cat food city",
+    });
+
+
+    const sleepycat = Ad.create({
+        titre: "Sleepy Cat",
+        description: "Sleepy cat,Sleepy cat ..But it's not your fault!",
+        prix: 2,
+        picpath: "https://i.ibb.co/xcbJf5d/Screenshot-From-2025-12-13-21-28-25.png",
+        location: "Each Morning",
+    });
+
+
     const supercat = Ad.create({
         titre: "Chat Fusé",
         description: "Super Cat strikes again",
@@ -114,6 +142,9 @@ async function main() {
     const gateaucat = await Category.create({ nom: "gâteau" }).save();
 
 
+    catdonald.categorie = chatcat;
+    sleepycat.categorie = chatcat;
+    duck.categorie = gamecat;
     duke.categorie = gamecat;
     tshirt.categorie = vetementcat;
     peignoir.categorie = vetementcat;
@@ -126,6 +157,10 @@ async function main() {
     Bricocat.categorie = chatcat;
     supercat.categorie = chatcat;
 
+
+    await sleepycat.save();
+    await catdonald.save();
+    await duck.save();
     await duke.save();
     await tshirt.save();
     await patriote.save();

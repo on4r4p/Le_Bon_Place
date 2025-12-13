@@ -6,9 +6,7 @@ interface AdCardProps {
     ad: Ad;
 }
 
-export default function AdCard({
-    ad: { id, titre, picpath, prix },
-}: AdCardProps) {
+export default function AdCard({ ad: { id, titre, picpath, prix } }: AdCardProps) {
     return (
         <Link href={`http://127.0.0.1:3000/ads/${id}`}
             className="w-[400px] h- [400px] cursor-pointer">
