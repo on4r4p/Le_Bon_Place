@@ -1,0 +1,5 @@
+PATCH http://127.0.0.1:4000/ads/1
+Content-Type: application/json
+{
+  "title": "test update",
+}

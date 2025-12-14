@@ -1,8 +1,0 @@
-query RecentAds {
-    ads {
-        id
-        titre
-        prix
-        picpath
-    }
-}

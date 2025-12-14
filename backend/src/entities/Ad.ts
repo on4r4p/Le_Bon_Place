@@ -1,5 +1,5 @@
-import { Field, InputType, Int, ObjectType } from "type-graphql";
 import { IsUrl, Length, Min } from "class-validator";
+import { Field, InputType, Int, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -10,10 +10,9 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-
-import { ObjectId } from "../types_backend";
-import { Category } from "./Cat";
-import { Tag } from "./Tg";
+import { ObjectId } from "../types";
+import { Category } from "./Category";
+import { Tag } from "./Tag";
 
 @ObjectType()
 @Entity()
@@ -24,11 +23,11 @@ export class Ad extends BaseEntity {
 
   @Field()
   @Column({ length: 100 })
-  titre: string;
+  title: string;
 
   @Field()
   @Column()
-  prix: number;
+  price: number;
 
   @Field()
   @Column({ type: "text", nullable: true })
@@ -39,8 +38,8 @@ export class Ad extends BaseEntity {
   createdAt: Date;
 
   @Field(() => Category)
-  @ManyToOne(() => Category, { onDelete: 'CASCADE' })
-  categorie: Category;
+  @ManyToOne(() => Category, { onDelete: "CASCADE" })
+  category: Category;
 
   @Field(() => [Tag])
   @JoinTable()
@@ -53,28 +52,28 @@ export class Ad extends BaseEntity {
 
   @Field()
   @Column()
-  picpath: string;
+  pictureUrl: string;
 }
 
 @InputType()
-export class NewAd {
+export class NewAdInput {
   @Field()
-  @Length(4, 50, { message: "Le titre doit contenir au minimum 4 lettres et au maximum 50" })
-  titre: string;
+  @Length(5, 50, { message: "Le titre doit contenir entre 5 et 50 caractères" })
+  title: string;
 
   @Field()
   description: string;
 
   @Field()
-  @Min(0, { message: "Pas assez cher mon fils" })
-  prix: number;
+  @Min(0, { message: "le prix doit etre positif" })
+  price: number;
 
   @Field()
   location: string;
 
   @Field()
   @IsUrl()
-  picpath: string;
+  pictureUrl: string;
 
   @Field(() => ObjectId)
   category: ObjectId;
@@ -84,24 +83,24 @@ export class NewAd {
 }
 
 @InputType()
-export class UpdateAd {
+export class UpdateAdInput {
   @Field({ nullable: true })
-  @Length(4, 50, { message: "Le titre doit contenir au minimum 4 lettres et au maximum 50" })
-  titre?: string;
+  @Length(5, 50, { message: "Le titre doit contenir entre 5 et 50 caractères" })
+  title?: string;
 
   @Field({ nullable: true })
   description?: string;
 
   @Field({ nullable: true })
-  @Min(0, { message: "Pas assez cher mon fils.." })
-  prix?: number;
+  @Min(0, { message: "le prix doit etre positif" })
+  price?: number;
 
   @Field({ nullable: true })
   @IsUrl()
-  picpath?: string;
+  pictureUrl?: string;
 
   @Field(() => ObjectId, { nullable: true })
-  categorie?: ObjectId;
+  category?: ObjectId;
 
   @Field(() => [ObjectId], { nullable: true })
   tags?: ObjectId[];

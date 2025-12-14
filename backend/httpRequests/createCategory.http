@@ -1,7 +1,5 @@
 POST http://127.0.0.1:4000/categories
-
 Content-Type: application/json
 {
-  "nom": "cat2"
+  "name": "cat2"
 }
-
