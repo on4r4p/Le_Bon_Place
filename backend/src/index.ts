@@ -38,7 +38,7 @@ app.get("/ads", async (req, res) => {
   try {
     const categoryId =
       typeof req.query.categoryId === "string"
-        ? parseInt(req.query.categoryId, 10)
+        ? parseInt(req.query.categoryId, 30)
         : undefined;
 
     const titleContains = req.query.titleContains;
