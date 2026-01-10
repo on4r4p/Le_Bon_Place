@@ -3,6 +3,10 @@ import { resolve } from "node:path";
 import { Ad } from "../entities/Ad";
 import { Category } from "../entities/Category";
 import { Tag } from "../entities/Tag";
+import { User, UserRole } from "../entities/User"
+
+import { hash } from "argon2";
+
 import db from "./index";
 
 export async function clearDB() {
@@ -12,6 +16,25 @@ export async function clearDB() {
 async function main() {
   await clearDB().catch(console.error);
   await db.initialize();
+
+
+
+  const newuser = await User.create(
+    {
+      email: "Alice@wouhou.com",
+      hashPass: await hash("AliceP@ss3w0rd"),
+
+
+    }
+  ).save();
+
+  const newAdmin = await User.create(
+    {
+      email: "Bob@random.com",
+      hashPass: await hash("@DminP4ssW0rd"),
+    }
+  ).save();
+
 
   const duke = Ad.create({
     title: "DukeNukem",
@@ -24,7 +47,7 @@ async function main() {
   const riging = Ad.create({
     title: "Cat Rigging",
     description:
-      "Chat en train d'appeler frénétiquement un maitre d'hotel.Parfait pour decorer vos soirée vip",
+      "Chat en train d'appeler frénétiquement un maitre d'hotel.Parfait pour decorer vos soirées vip",
     price: 422,
     pictureUrl: "https://i.postimg.cc/tJYZQY2K/catriging.png",
     location: "Hotel du Palais Biarritz",
@@ -135,9 +158,9 @@ async function main() {
   const chatcat = await Category.create({ name: "chat" }).save();
   const gateaucat = await Category.create({ name: "gâteau" }).save();
 
-  const tag1 = await Tag.create({ name: "tag1" }).save();
-  const tag2 = await Tag.create({ name: "tag2" }).save();
-  const tag3 = await Tag.create({ name: "tag3" }).save();
+  const tag1 = await Tag.create({ name: "Super" }).save();
+  const tag2 = await Tag.create({ name: "Cool" }).save();
+  const tag3 = await Tag.create({ name: "Wos" }).save();
 
   duck.category = gamecat;
   duke.category = gamecat;
@@ -171,6 +194,9 @@ async function main() {
   await cake.save();
   await bsdm.save();
   await supercat.save();
+
+
+
 
   await db.destroy();
   console.log("db reset done !");
