@@ -1,6 +1,6 @@
 import { IsEmail, IsStrongPassword, isStrongPassword } from 'class-validator';
 import { Field, InputType, Int, ObjectType } from "type-graphql";
-import { BaseEntity, Column, CreateDateColumn, Entity, In, PrimaryGeneratedColumn, } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, } from "typeorm";
 
 export enum UserRole {
     ADMIN = "ADMIN",
@@ -26,6 +26,7 @@ export class User extends BaseEntity {
     hashPass: string;
 
     @Field(() => UserRole)
+
     //temp fix pour sqlite
     @Column({ type: "simple-enum", enum: UserRole, default: UserRole.VISITOR })
     role: UserRole;

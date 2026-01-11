@@ -23,8 +23,6 @@ async function main() {
     {
       email: "Alice@wouhou.com",
       hashPass: await hash("AliceP@ss3w0rd"),
-
-
     }
   ).save();
 
