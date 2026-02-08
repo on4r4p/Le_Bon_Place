@@ -1,10 +1,10 @@
+import type { FormEvent } from "react";
 import Layout from "@/components/Layout";
 import {
   useCreateTagMutation,
-  useTagsQuery,
   useDeleteTagMutation,
+  useTagsQuery,
 } from "@/graphql/generated/schema";
-import { FormEvent } from "react";
 
 export default function TagAdmin() {
   const { data, refetch } = useTagsQuery();

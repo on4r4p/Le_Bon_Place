@@ -1,0 +1,28 @@
+name: Compile and push client and server to staging environment
+
+on:
+  push:
+    branches: ["dev"]
+  workflow_dispatch:
+
+jobs:
+  client-tests:
+    uses: on4r4p/Le_Bon_Place/.github/workflows/test-frontend.yml@dev
+
+  build-and-push-server:
+    uses: on4r4p/Le_Bon_Place/.github/workflows/build-backend.yml@dev
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    with:
+      image_name: on4r4p/lebonplace_back:staging
+
+  build-and-push-client:
+    needs:
+      - client-tests
+    uses: on4r4p/Le_Bon_Place/.github/workflows/build-frontend.yml@dev
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    with:
+      image_name: on4r4p/lebonplace_front:staging
