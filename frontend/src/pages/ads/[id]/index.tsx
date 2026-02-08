@@ -32,7 +32,7 @@ export default function AdDetails() {
     currentUser?.role === "admin" || ad?.author.id === currentUser?.id;
 
   return (
-    <Layout pageTitle={ad?.title ? `${ad.title} - TGC` : "The Good Corner"}>
+    <Layout pageTitle={ad?.title ? `${ad.title} - TGC` : "Le Bon Place"}>
       <div className="pb-12 mt-12 max-w-[800px] mx-auto">
         <div className="p-6 bg-white shadow-lg rounded-2xl">
           {typeof ad === "undefined" ? (

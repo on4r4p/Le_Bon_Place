@@ -33,7 +33,7 @@ export default function Header() {
       {/* Small screen layout: Title + Burger menu */}
       <div className="flex flex-row justify-between items-center xl:hidden">
         <Link href="/" className="w-max">
-          <h1 className="text-orange-600 text-2xl font-bold">The good corner</h1>
+          <h1 className="text-orange-600 text-2xl font-bold">Le Bon Place</h1>
         </Link>
 
         <div className="flex items-center gap-2">
@@ -134,7 +134,7 @@ export default function Header() {
       <div className="hidden xl:flex xl:flex-row xl:justify-between xl:items-center">
         <div className="flex flex-row items-center gap-4">
           <Link href="/" className="w-max">
-            <h1 className="text-orange-600 text-2xl font-bold">The good corner</h1>
+            <h1 className="text-orange-600 text-2xl font-bold">Le Bon Place</h1>
           </Link>
 
           <SearchInput inputClassName="w-sm" />
