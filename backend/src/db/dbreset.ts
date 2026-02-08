@@ -1,38 +1,33 @@
-import { unlink } from "node:fs/promises";
-import { resolve } from "node:path";
+import { hash } from "argon2";
 import { Ad } from "../entities/Ad";
 import { Category } from "../entities/Category";
 import { Tag } from "../entities/Tag";
-import { User, UserRole } from "../entities/User"
-
-import { hash } from "argon2";
-
+import { User, UserRole } from "../entities/User";
 import db from "./index";
 
 export async function clearDB() {
-  await unlink(resolve("src/db/lebonplace.sqlite"));
+  const runner = db.createQueryRunner();
+  const tableDroppings = db.entityMetadatas.map((entity) =>
+    runner.query(`DROP TABLE IF EXISTS "${entity.tableName}" CASCADE`),
+  );
+  await Promise.all(tableDroppings);
+  await db.synchronize();
 }
 
 async function main() {
-  await clearDB().catch(console.error);
   await db.initialize();
+  await clearDB();
 
+  const visitor = await User.create({
+    email: "alice@wouhou.com",
+    hashedPassword: await hash("AliceP@ss3w0rd"),
+  }).save();
 
-
-  const newuser = await User.create(
-    {
-      email: "Alice@wouhou.com",
-      hashPass: await hash("AliceP@ss3w0rd"),
-    }
-  ).save();
-
-  const newAdmin = await User.create(
-    {
-      email: "Bob@random.com",
-      hashPass: await hash("@DminP4ssW0rd"),
-    }
-  ).save();
-
+  const admin = await User.create({
+    email: "bob@random.com",
+    hashedPassword: await hash("@DminP4ssW0rd"),
+    role: UserRole.Admin,
+  }).save();
 
   const duke = Ad.create({
     title: "DukeNukem",
@@ -41,6 +36,7 @@ async function main() {
     pictureUrl:
       "https://2.bp.blogspot.com/_GJHAezShK6I/S2dpBNo4ovI/AAAAAAAANGM/3NLH0KVR40g/s400/Duke%2520Nukem.jpg",
     location: "UpYours",
+    author: visitor,
   });
   const riging = Ad.create({
     title: "Cat Rigging",
@@ -49,6 +45,7 @@ async function main() {
     price: 422,
     pictureUrl: "https://i.postimg.cc/tJYZQY2K/catriging.png",
     location: "Hotel du Palais Biarritz",
+    author: visitor,
   });
 
   const tshirt = Ad.create({
@@ -57,6 +54,7 @@ async function main() {
     price: 34,
     pictureUrl: "https://s12.gifyu.com/images/bEbbZ.png",
     location: "Paris",
+    author: visitor,
   });
   const patriote = Ad.create({
     title: "Chat Patriote Mignon",
@@ -65,6 +63,7 @@ async function main() {
     pictureUrl:
       "https://i.ibb.co/s4R4LNS/Screenshot-From-2025-12-03-17-38-19.png",
     location: "USA USA USA USA",
+    author: admin,
   });
   const gandalf = Ad.create({
     title: "Chat Gandalf métaleux",
@@ -72,6 +71,7 @@ async function main() {
     price: 423,
     pictureUrl: "https://i.postimg.cc/Bbx02Nc1/Cat-Guitar-Sunglasses.png",
     location: "Middle Earth",
+    author: admin,
   });
   const duck = Ad.create({
     title: "DuckNukem",
@@ -80,6 +80,7 @@ async function main() {
     pictureUrl:
       "https://upload.wikimedia.org/wikipedia/commons/d/d5/Rubber_duck_assisting_with_debugging.jpg",
     location: "ligne 404",
+    author: visitor,
   });
 
   const bsdm = Ad.create({
@@ -88,6 +89,7 @@ async function main() {
     price: 69,
     pictureUrl: "https://m.media-amazon.com/images/I/61yKaUSqtZL.jpg",
     location: "Bois de boulogne",
+    author: admin,
   });
 
   const peignoir = Ad.create({
@@ -96,6 +98,7 @@ async function main() {
     price: 25,
     pictureUrl: "https://i.ibb.co/YJkfY99/peignoireleopard.png",
     location: "Tanzanie",
+    author: visitor,
   });
 
   const cake = Ad.create({
@@ -105,6 +108,7 @@ async function main() {
     pictureUrl:
       "https://spillthebeans.ie/wp-content/uploads/2015/08/portalcake1.jpg",
     location: "Aperture science",
+    author: admin,
   });
 
   const dj = Ad.create({
@@ -114,14 +118,16 @@ async function main() {
     pictureUrl:
       "https://i.ibb.co/C5M3MP7C/Screenshot-From-2025-12-05-10-58-39.png",
     location: "MacoumbaNightclub",
+    author: admin,
   });
 
-  const Bricocat = Ad.create({
+  const bricocat = Ad.create({
     title: "Chat bricolo",
     description: "Pip my cat",
     price: 366,
     pictureUrl: "https://i.ibb.co/fVz8GT8Y/catbricolo.png",
     location: "Le garage le plus proche",
+    author: visitor,
   });
 
   const catdonald = Ad.create({
@@ -131,6 +137,7 @@ async function main() {
     pictureUrl:
       "https://i.ibb.co/Z6Hsv0tq/Screenshot-From-2025-12-13-21-27-51.png",
     location: "Fast cat food city",
+    author: visitor,
   });
 
   const sleepycat = Ad.create({
@@ -140,6 +147,7 @@ async function main() {
     pictureUrl:
       "https://i.ibb.co/xcbJf5d/Screenshot-From-2025-12-13-21-28-25.png",
     location: "Each Morning",
+    author: admin,
   });
 
   const supercat = Ad.create({
@@ -148,6 +156,7 @@ async function main() {
     price: 723,
     pictureUrl: "https://i.postimg.cc/9XrkthCv/Cat-Jump-Epic.png",
     location: "Litiére de la solitude",
+    author: visitor,
   });
 
   const gamecat = await Category.create({ name: "informatique" }).save();
@@ -156,27 +165,41 @@ async function main() {
   const chatcat = await Category.create({ name: "chat" }).save();
   const gateaucat = await Category.create({ name: "gâteau" }).save();
 
-  const tag1 = await Tag.create({ name: "Super" }).save();
-  const tag2 = await Tag.create({ name: "Cool" }).save();
-  const tag3 = await Tag.create({ name: "Wos" }).save();
+  const tagSuper = await Tag.create({ name: "Super" }).save();
+  const tagCool = await Tag.create({ name: "Cool" }).save();
+  const tagWos = await Tag.create({ name: "Wos" }).save();
 
   duck.category = gamecat;
+  duck.tags = [tagCool];
   duke.category = gamecat;
+  duke.tags = [tagSuper, tagCool];
 
   tshirt.category = vetementcat;
+  tshirt.tags = [tagCool];
   peignoir.category = vetementcat;
+  peignoir.tags = [tagWos];
 
   cake.category = gateaucat;
+  cake.tags = [tagSuper];
   bsdm.category = accessoirecat;
+  bsdm.tags = [tagWos];
 
-  Bricocat.category = chatcat;
+  bricocat.category = chatcat;
+  bricocat.tags = [tagSuper];
   supercat.category = chatcat;
+  supercat.tags = [tagSuper, tagWos];
   catdonald.category = chatcat;
+  catdonald.tags = [tagCool, tagWos];
   sleepycat.category = chatcat;
+  sleepycat.tags = [tagCool];
   gandalf.category = chatcat;
+  gandalf.tags = [tagSuper];
   riging.category = chatcat;
+  riging.tags = [tagWos];
   patriote.category = chatcat;
+  patriote.tags = [tagSuper, tagCool];
   dj.category = chatcat;
+  dj.tags = [tagCool];
 
   await sleepycat.save();
   await catdonald.save();
@@ -188,13 +211,10 @@ async function main() {
   await riging.save();
   await gandalf.save();
   await peignoir.save();
-  await Bricocat.save();
+  await bricocat.save();
   await cake.save();
   await bsdm.save();
   await supercat.save();
-
-
-
 
   await db.destroy();
   console.log("db reset done !");

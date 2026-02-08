@@ -5,8 +5,8 @@ import { getSchema } from "./schema";
 import type { GraphQLContext } from "./types";
 
 export async function initApollo(fastify: FastifyInstance) {
-    return new ApolloServer<GraphQLContext>({
-        schema: await getSchema(),
-        plugins: [fastifyApolloDrainPlugin(fastify)],
-    });
+  return new ApolloServer<GraphQLContext>({
+    schema: await getSchema(),
+    plugins: [fastifyApolloDrainPlugin(fastify)],
+  });
 }

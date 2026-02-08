@@ -1,6 +1,5 @@
+import type { FastifyReply, FastifyRequest } from "fastify";
 import { Field, InputType, Int } from "type-graphql";
-import { FastifyReply, FastifyRequest } from "fastify";
-
 
 @InputType()
 export class ObjectId {
@@ -8,7 +7,7 @@ export class ObjectId {
   id: number;
 }
 
-expot interface GraphQLContext {
+export interface GraphQLContext {
   res: FastifyReply;
   req: FastifyRequest;
 }

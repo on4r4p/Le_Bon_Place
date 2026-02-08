@@ -1,57 +1,73 @@
-import { IsEmail, IsStrongPassword, isStrongPassword } from 'class-validator';
+import { IsEmail, IsStrongPassword } from "class-validator";
 import { Field, InputType, Int, ObjectType } from "type-graphql";
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
-export enum UserRole {
-    ADMIN = "ADMIN",
-    VISITOR = "VISITOR"
-}
+export const UserRole = {
+  Admin: "admin",
+  Visitor: "visitor",
+} as const;
+
+export type Role = (typeof UserRole)[keyof typeof UserRole];
 
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
-    @Field(() => Int)
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Field(() => Int)
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Field()
-    @Column({ unique: true })
-    email: string;
+  @Field()
+  @Column({ unique: true })
+  email: string;
 
-    @Field()
-    @CreateDateColumn()
-    createdAt: Date;
+  @Column()
+  hashedPassword: string;
 
-    @Column()
-    hashPass: string;
+  @Field()
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @Field(() => UserRole)
-
-    //temp fix pour sqlite
-    @Column({ type: "simple-enum", enum: UserRole, default: UserRole.VISITOR })
-    role: UserRole;
+  @Field()
+  @Column({ enum: UserRole, default: UserRole.Visitor })
+  role: Role;
 }
 
 @InputType()
 export class SignupInput {
+  @Field()
+  @IsEmail({}, { message: "L'email doit être valide" })
+  email: string;
 
-    @Field()
-    @IsEmail({}, { message: "Email invalide" })
-    email: string;
-    @Field()
-    @IsStrongPassword({}, { message: "8 char min + Majuscule/minuscule+ chiffre+ speciale char" })
-    password: string;
-
+  @Field()
+  @IsStrongPassword(
+    {},
+    {
+      message:
+        "Le mot de passe doit contenir au moins 8 caractères, dont une minuscule, une majuscule, un chiffre et un caractère spécial",
+    },
+  )
+  password: string;
 }
 
 @InputType()
 export class LoginInput {
-    @Field()
-    @IsEmail({}, { message: "Email invalide" })
-    email: string
+  @Field()
+  @IsEmail({}, { message: "L'email doit être valide" })
+  email: string;
 
-    @IsStrongPassword({}, { message: "8 char min + Majuscule/minuscule+ chiffre+ speciale char" })
-    password: string;
+  @Field()
+  @IsStrongPassword(
+    {},
+    {
+      message:
+        "Le mot de passe doit contenir au moins 8 caractères, dont une minuscule, une majuscule, un chiffre et un caractère spécial",
+    },
+  )
+  password: string;
 }
-
-

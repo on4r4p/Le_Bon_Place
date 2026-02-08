@@ -6,8 +6,8 @@ import TagResolver from "./resolvers/TagResolver";
 import UserResolver from "./resolvers/UserResolver";
 
 export async function getSchema() {
-    return buildSchema({
-        resolvers: [AdResolver, CategoryResolver, TagResolver, UserResolver],
-        authChecker,
-    });
+  return buildSchema({
+    resolvers: [AdResolver, CategoryResolver, TagResolver, UserResolver],
+    authChecker,
+  });
 }

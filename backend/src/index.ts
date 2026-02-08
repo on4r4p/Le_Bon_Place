@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import { fastifyApolloHandler } from "@as-integrations/fastify";
-import type { FastifyReply, FastifyRequest } from "fastify";
 import { initApollo } from "./apollo";
 import db from "./db";
 import env from "./env";
@@ -15,12 +14,12 @@ async function start() {
   fastify.all(
     "/",
     fastifyApolloHandler(apollo, {
-      context: async (req: FastifyRequest, res: FastifyReply) => ({ res, req }),
+      context: async (req, res) => ({ res, req }),
     }),
   );
 
-  await fastify.listen({ port: env.GRAPHQL_SERVER_PORT });
-  console.log(`✨ server ready ! http://127.0.0.1:${env.GRAPHQL_SERVER_PORT}`);
+  await fastify.listen({ port: env.GRAPHQL_SERVER_PORT, host: "0.0.0.0" });
+  console.log(`✨ server ready ! http://localhost:${env.GRAPHQL_SERVER_PORT}`);
 }
 
 start();

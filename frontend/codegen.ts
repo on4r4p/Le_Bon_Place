@@ -1,8 +1,10 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
+const uri = process.env.NEXT_PUBLIC_GRAPHQL_API_URL;
+
 const config: CodegenConfig = {
   overwrite: true,
-  schema: "http://127.0.0.1:4001",
+  schema: uri,
   documents: ["**/*.{gql,graphql}"],
   ignoreNoDocuments: true, // for better experience with the watcher
   generates: {
